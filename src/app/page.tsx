@@ -1,4 +1,5 @@
 import Header from "@/components/layout/Header";
+import ProductSection from "@/components/products/ProductSection";
 import Link from "next/link";
 
 
@@ -27,6 +28,9 @@ export default function Home() {
              مشاهده محصولات
           </Link>
          </section>
+
+          <ProductSection/>
+
       </main>
       </>
   )
