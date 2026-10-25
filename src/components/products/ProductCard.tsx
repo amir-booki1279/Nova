@@ -27,7 +27,78 @@ const ProductCard = ({product}:ProductCardProps) => {
                                 </p>
                         </div>
                 </div>
+                 {product.discountPercentage > 0 && (
+                    <span className="absolute right-3 top-3  rounded-lg bg-red-500 px-2.5
+                    py-1 text-xs font-bold text-white">
+                        {product.discountPercentage}% تخفیف
+                    </span>
+                )}
+                {product.stock === 0 && (
+                    <span className="absolute inset-0 flex items-center justify-center
+                     bg-white/75">
+                        <span className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-bold text-white">
+                            ناموجود
+                        </span>
+                    </span>
+                )}
+
+                <button
+                type="button"
+                aria-label=""
+                // onClick={(e)=>{
+                //     e.preventDefault()
+                //     e.stopPropagation()
+                // }}
+                className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center 
+                rounded-full bg-white text-xl text-slate-500 shadow-sm transition hover:text-red-500 cursor-pointer"
+                >
+                    ♡
+                </button>
             </Link>
+
+                <div className="p-4">
+                    <p className="text-xs text-slate-500">{product.category}</p>
+
+                    <Link href={`/products/${product.slug}`}>
+                        <h2 className="mt-2 min-h-12 text-sm leading-6
+                        font-bold text-slate-800 transition group-hover:text-orange-600">
+                            {product.name}
+                        </h2>
+                    </Link>
+
+                    <div className="mt-3 flex items-center gap-1.5 text-sm">
+                        <span className="text-amber-500">★</span>
+                        <span className="font-bold text-slate-700">
+                            {formattedPrice(product.rating)}
+                        </span>
+                        <span className="text-xs text-slate-400">
+                            {formattedPrice(product.reviewCount) } نظر
+                        </span>
+                    </div>
+
+                    <div className="mt-4 border-t border-slate-100 pt-4">
+                        {product.discountPercentage>0 && (
+                            <p className="text-xs text-slate-400 line-through">
+                                {formattedPrice(product.price)} تومان
+                            </p>
+                        )}
+                        <div className="mt-1 flex items-center justify-between gap-2">
+                            <p className="text-base font-black text-slate-900">
+                                {formattedPrice(discountedPrice)}
+                                <span className="mr-1 text-xs font-normal text-slate-500">تومان</span>
+                            </p>
+                        </div>
+                        <button
+                        type="button"
+                        disabled={product.stock===0}
+                        className="mt-4 w-full rounded-xl bg-orange-500 px-4 py-3 text-sm 
+                        font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
+                        >
+                            {product.stock > 0 ? 'افزودن به سبد خرید' : 'ناموجود'}
+                        </button>
+                    </div>
+                </div>
+
         </article>
     );
 };
