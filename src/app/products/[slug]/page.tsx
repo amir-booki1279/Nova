@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import Header from "@/components/layout/Header";
 import { products } from "@/lib/product";
+import AddToCartButton from "@/components/cart/AddToCartButton";
 
 
 
@@ -132,15 +133,7 @@ export default async function ProductPage({
                 </span>
               </div>
 
-              <button
-                type="button"
-                disabled={product.stock === 0}
-                className="mt-6 w-full rounded-xl bg-orange-500 px-6 py-4 font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
-              >
-                {product.stock > 0
-                  ? "افزودن به سبد خرید"
-                  : "ناموجود"}
-              </button>
+             <AddToCartButton product={product}/>
             </div>
 
             <div className="mt-6 space-y-3 text-sm leading-7 text-slate-600">
