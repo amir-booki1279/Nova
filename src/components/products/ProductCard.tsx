@@ -1,4 +1,5 @@
 import { Product } from "@/types/products"
+import Image from "next/image";
 import Link from "next/link";
 
 
@@ -17,16 +18,15 @@ const ProductCard = ({product}:ProductCardProps) => {
         <article className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl hover:shadow-slate-200/50">
             <Link href={`/products/${product.slug}`}
             className="relative block overflow-hidden bg-slate-50">
-                <div className="flex aspect-square items-center justify-center">
-                        <div className="text-center">
-                                <span className="text-5xl text-slate-300">
-                                    ✦
-                                </span>
-                                <p className="mt-3 text-xs text-slate-400">
-                                    تصویر محصول
-                                </p>
-                        </div>
-                </div>
+                <div className="relative aspect-square overflow-hidden">
+  <Image
+    src={product.image}
+    alt={product.name}
+    fill
+    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+    className="object-cover transition duration-500 group-hover:scale-105"
+  />
+</div>
                  {product.discountPercentage > 0 && (
                     <span className="absolute right-3 top-3  rounded-lg bg-red-500 px-2.5
                     py-1 text-xs font-bold text-white">
