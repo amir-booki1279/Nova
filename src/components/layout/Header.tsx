@@ -1,7 +1,12 @@
+"use client"
+
+
 import Link from "next/link";
+import { useCart } from "../cart/CartProvider";
 
 
 const Header = () => {
+    const  {totalItems} = useCart()
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white">
             <div className="bg-slate-900 px-4 py-2 text-center text-sm text-white">
@@ -68,6 +73,11 @@ const Header = () => {
                             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                         </svg>
                         <span className="hidden sm:inline ">سبد خرید</span>
+                        {totalItems > 0 &&(
+                            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange-600 px-1 text-xs font-bold text-white">
+                                {totalItems.toLocaleString("fa-IR")}
+                            </span>
+                        )}
                     </Link>
                 </div>
             </div>
