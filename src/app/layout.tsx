@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {Vazirmatn} from  'next/font/google'
 import "./globals.css";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { FavoriteProvider } from "@/components/favorites/FavoriteProvider";
 
 const vazirmatn = Vazirmatn({
   subsets :["arabic"],
@@ -20,7 +21,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="fa" dir="rtl">
       <body className={vazirmatn.className}>
-        <CartProvider> {children} </CartProvider>
+        <CartProvider> 
+          <FavoriteProvider>
+            {children} 
+          </FavoriteProvider>
+          </CartProvider>
       </body>
     </html>
   );
