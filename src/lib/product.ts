@@ -36,7 +36,7 @@ export const products: Product[] = [
     reviewCount: 203,
     image:"/images/3.jpg",
     stock: 0,
-    category: "لوازم جانبی کامپیوتر",
+    category: "لوازم خانه"
   },
   {
     id: "4",
@@ -48,6 +48,6 @@ export const products: Product[] = [
     reviewCount: 67,
     image:"/images/4.jpg",
     stock: 15,
-    category: "لوازم جانبی کامپیوتر",
+    category: "لوازم خانه"
   },
 ];
