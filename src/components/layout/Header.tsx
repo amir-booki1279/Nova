@@ -19,7 +19,8 @@ const Header = () => {
                   <span className="text-orange-500">.</span> NOVA 
                 </Link>
 
-                <form  className="flex flex-1 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition focus-within:border-orange-500">
+                <form  action={'/search'} method="GET"
+                className="flex flex-1 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition focus-within:border-orange-500">
                     <input 
                     type="search"
                     name="q"
