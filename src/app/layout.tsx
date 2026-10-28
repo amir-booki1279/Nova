@@ -3,6 +3,7 @@ import {Vazirmatn} from  'next/font/google'
 import "./globals.css";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { FavoriteProvider } from "@/components/favorites/FavoriteProvider";
+import { Toaster } from "sonner";
 
 const vazirmatn = Vazirmatn({
   subsets :["arabic"],
@@ -26,6 +27,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children} 
           </FavoriteProvider>
           </CartProvider>
+          <Toaster
+          position="top-center"
+          richColors
+          closeButton
+          dir="rtl"
+          duration={3000}
+          />
       </body>
     </html>
   );
