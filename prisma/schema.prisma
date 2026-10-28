@@ -12,49 +12,115 @@ datasource db {
   provider = "mysql"
 }
 
-
-enum UserRole{
+enum UserRole {
   USER
   ADMIN
 }
 
-model User{
-  id  String @id @default(cuid())
-  name String
-  email String @unique
+model User {
+  id       String   @id @default(cuid())
+  name     String
+  email    String   @unique
   password String
-  role UserRole @default(USER)
+  role     UserRole @default(USER)
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+
+  orders    Order[]
+  addresses Address[]
 }
 
-model Category{
-   id  String @id @default(cuid())
-  name String @unique
-  slug String @unique
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
   description String?
-    createAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  createAt    DateTime @default(now())
+  updateAt    DateTime @updatedAt
 
   products Product[]
 }
 
-model Product{
-     id  String @id @default(cuid())
-  name String
-  slug String @unique
-  description String @db.Text
-  price Int
-  discountPercentage Int @default(0)
-  stock Int @default(0)
-  image String
-  rating Float @default(0)
-  reviewCount Int @default(0)
-  isActive Boolean @default(true)
+model Product {
+  id                 String  @id @default(cuid())
+  name               String
+  slug               String  @unique
+  description        String  @db.Text
+  price              Int
+  discountPercentage Int     @default(0)
+  stock              Int     @default(0)
+  image              String
+  rating             Float   @default(0)
+  reviewCount        Int     @default(0)
+  isActive           Boolean @default(true)
+
+  orderItems OrderItem[]
 
   categoryId String
-  category Category @relation(fields: [categoryId],references: [id],onDelete: Restrict)
-  
-    createAt DateTime @default(now())
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model Order {
+  id          String @id @default(cuid())
+  orderNumber String @unique
+
+  userId String
+
+  totalAmount   Int
+  status        OrderStatus   @default(PENDING)
+  paymentStatus PaymentStatus @default(UNPAID)
+  createAt      DateTime      @default(now())
+  updateAt      DateTime      @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  quantity  Int
+  unitPrice Int
+  createAt  DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  title      String
+  recipient  String
+  phone      String
+  province   String
+  city       String
+  address    String   @db.Text
+  postalCode String
+  isDefault  Boolean  @default(false)
+  createAt   DateTime @default(now())
+  updateAt   DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
