@@ -35,13 +35,19 @@ export default async function AddressesPage() {
             آدرس‌های ارسال سفارش‌های خود را مدیریت کنید.
           </p>
         </div>
-
+         <div className="flex gap-3">
+           <Link href={'/dashboard/addresses/new'}
+          className="rounded-lg bg-orange-500 px-4 py-3 text-sm font-semibold
+          text-white transition hover:bg-orange-600">
+                  افزودن آدرس +
+          </Link>
         <Link
           href="/dashboard"
-          className="rounded-xl border px-4 py-2 text-sm transition hover:bg-gray-50"
+          className="rounded-xl border px-4 py-3 text-sm transition hover:bg-gray-50"
         >
           بازگشت به داشبورد
         </Link>
+         </div>
       </div>
 
       {addresses.length === 0 ? (
