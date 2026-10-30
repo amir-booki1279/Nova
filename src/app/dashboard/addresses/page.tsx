@@ -1,3 +1,4 @@
+import DeleteAddressButton from "@/components/dashboard/DeleteAddressButton";
 import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
@@ -96,6 +97,16 @@ export default async function AddressesPage() {
               <p className="mt-2 text-sm text-gray-500">
                 کد پستی: {address.postalCode}
               </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+            <Link
+              href={`/dashboard/addresses/${address.id}/edit`}
+              className="rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
+            >
+              ویرایش آدرس
+            </Link>
+
+            <DeleteAddressButton addressId={address.id} />
+</div>
             </article>
           ))}
         </div>

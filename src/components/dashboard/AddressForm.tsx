@@ -11,10 +11,27 @@ import {
   type AddressInput,
 } from "@/lib/validation";
 
+
+type Address = {
+  id:string,
+  title:string
+  recipient:string,
+  phone:string,
+  province:string,
+  city:string,
+  address:string,
+  postalCode:string,
+  isDefault:boolean
+}
+
+type AddressFormProps = {
+  initialData?:Address
+}
+
 const inputClass =
   "w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100";
 
-export default function AddressForm() {
+export default function AddressForm({initialData}:AddressFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,14 +42,14 @@ export default function AddressForm() {
   } = useForm<AddressInput>({
     resolver: zodResolver(addressSchema),
     defaultValues: {
-      title: "",
-      recipient: "",
-      phone: "",
-      province: "",
-      city: "",
-      address: "",
-      postalCode: "",
-      isDefault: false,
+      title:initialData?.title ?? "",
+      recipient:initialData?.recipient ?? "",
+      phone:initialData?.phone ?? "",
+      province:initialData?.province ?? "",
+      city:initialData?.city ?? "",
+      address:initialData?.address ?? "",
+      postalCode:initialData?.postalCode ?? "",
+      isDefault:initialData?.isDefault ?? false,
     },
   });
 
@@ -40,8 +57,10 @@ export default function AddressForm() {
     try {
       setIsLoading(true);
 
-      const response = await fetch("/api/user/addresses", {
-        method: "POST",
+      const response = await fetch(
+        initialData ?
+        `/api/user/addresses/${initialData.id}` :"/api/user/addresses", {
+        method:initialData ? "PATCH" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -55,7 +74,7 @@ export default function AddressForm() {
         return;
       }
 
-      toast.success(data.message);
+      toast.success(initialData ? 'آدرس با موفقیت ویرایش شد' : 'آدرس با موفقیت اضافه شد');
       router.push("/dashboard/addresses");
       router.refresh();
     } catch {
