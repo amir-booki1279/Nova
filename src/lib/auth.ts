@@ -10,12 +10,16 @@ export async function getCurrentUser() {
   const token = cookieStore.get("nova-session")?.value;
 
   if (!token) {
+    console.log("cookie");
+    
     return null;
   }
 
   const session = await verifySession(token);
 
   if (!session) {
+    console.log("session");
+
     return null;
   }
 
@@ -30,6 +34,7 @@ export async function getCurrentUser() {
       role: true,
     },
   });
+    console.log("user");
 
   return user;
 }
