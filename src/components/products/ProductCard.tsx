@@ -1,12 +1,13 @@
 "use client"
 
-import { Product } from "@/types/products";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useFavorites } from "../favorites/FavoriteProvider";
+import { DbProduct } from "@/lib/db-products";
 
 type ProductCardProps = {
-  product: Product;
+  product: DbProduct;
 };
 
 const ProductCard = ({ product }: ProductCardProps) => {
@@ -74,7 +75,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </Link>
 
       <div className="p-4">
-        <p className="text-xs text-slate-500">{product.category}</p>
+        <p className="text-xs text-slate-500">{product.category?.name}</p>
 
         <Link href={`/products/${product.slug}`}>
           <h2

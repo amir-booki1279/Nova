@@ -1,8 +1,15 @@
 import ProductFilters from "@/components/products/ProductsFilters";
-import { products } from "@/lib/product";
+import { getProducts } from "@/lib/db-products";
 
 
-export default function ProductsPage() {
+
+export default async function ProductsPage() {
+  
+  
+  const products = await getProducts();
+ 
+  
+
   return (
     <main className="mx-auto min-h-screen max-w-7xl px-4 py-10">
       <div className="mb-8">

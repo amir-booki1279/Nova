@@ -3,12 +3,13 @@
 import { useMemo, useState } from "react";
 
 import ProductCard from "@/components/products/ProductCard";
-import { Product } from "@/types/products";
+
+import { DbProduct } from "@/lib/db-products";
 
 export default function ProductFilters({
   products,
 }: {
-  products: Product[];
+  products: DbProduct[];
 }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("همه");
@@ -19,7 +20,7 @@ export default function ProductFilters({
 
   const categories = [
     "همه",
-    ...new Set(products.map((product) => product.category)),
+    ...new Set(products.map((product) => product.category.name)),
   ];
 
   const filteredProducts = useMemo(() => {
@@ -29,7 +30,7 @@ export default function ProductFilters({
         .includes(search.trim().toLowerCase());
 
       const matchesCategory =
-        category === "همه" || product.category === category;
+        category === "همه" || product.category.name === category;
 
       const matchesMinPrice =
         minPrice === "" || product.price >= Number(minPrice);

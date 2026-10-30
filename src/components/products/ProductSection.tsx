@@ -1,9 +1,13 @@
-import { products } from "@/lib/product";
+
 import Link from "next/link";
 import ProductCard from "./ProductCard";
+import { getProducts } from "@/lib/db-products";
 
 
-function ProductSection() {
+
+async function  ProductSection() {
+  const products = await getProducts();
+
     return (
         <section className="py-16">
             <div className="flex mb-8 items-end justify-between gap-4">
