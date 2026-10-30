@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 
 import prisma from "@/lib/prisma";
 import { loginSchema } from "@/lib/validation";
+import { createSession } from "@/lib/session";
 
 
 export async function POST(request: Request) {
@@ -52,7 +53,13 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({
+    const token = await createSession({
+        userId : user.id,
+        role : user.role
+    });
+
+
+    const respone= NextResponse.json({
       message: "ورود موفقیت‌آمیز بود",
       user: {
         id: user.id,
@@ -61,6 +68,16 @@ export async function POST(request: Request) {
         role: user.role,
       },
     });
+
+    respone.cookies.set("nova-session",token,{
+        httpOnly:true,
+        secure:process.env.NODE_ENV ==="production",
+        sameSite:"lax",
+        path:"/",
+        maxAge : 60 * 60 * 24 * 7
+    });
+    return respone;
+
   } catch (error: unknown) {
     console.error("Login error:", error);
 
