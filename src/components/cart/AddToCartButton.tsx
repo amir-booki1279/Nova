@@ -3,11 +3,12 @@
 import { useState } from "react";
 
 import { useCart } from "@/components/cart/CartProvider";
-import { Product } from "@/types/products";
+import { DbProduct } from "@/lib/db-products";
+
 
 
 type AddToCartButtonProps = {
-  product: Product;
+  product: DbProduct;
 };
 
 export default function AddToCartButton({

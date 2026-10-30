@@ -3,8 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import Header from "@/components/layout/Header";
-import { products } from "@/lib/product";
+
 import AddToCartButton from "@/components/cart/AddToCartButton";
+import { getProductBySlug } from "@/lib/db-products";
 
 
 
@@ -22,11 +23,9 @@ export default async function ProductPage({
   params,
 }: ProductPageProps) {
   const { slug } = await params;
-  console.log(2);
   
-
-  const product = products.find((item) => item.slug === slug);
-
+    const product = await getProductBySlug(slug);
+  
   if (!product) {
     notFound();
   }
@@ -79,7 +78,7 @@ export default async function ProductPage({
 
           <div className="flex flex-col justify-center">
             <p className="text-sm font-bold text-orange-500">
-              {product.category}
+              {product.category.name}
             </p>
 
             <h1 className="mt-4 text-2xl leading-relaxed font-black text-slate-900 sm:text-4xl">

@@ -1,6 +1,7 @@
 "use client";
 
-import { Product } from "@/types/products";
+import { DbProduct } from "@/lib/db-products";
+
 import {
   createContext,
   useContext,
@@ -11,13 +12,13 @@ import {
 
 
 
-type CartItem = Product & {
+type CartItem = DbProduct & {
   quantity: number;
 };
 
 type CartContextType = {
   items: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: DbProduct) => void;
   removeFromCart: (productId: string) => void;
   increaseQuantity: (productId: string) => void;
   decreaseQuantity: (productId: string) => void;
@@ -54,7 +55,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("nova-cart", JSON.stringify(items));
   }, [items, isLoaded]);
 
-  function addToCart(product: Product) {
+  function addToCart(product: DbProduct) {
     if (product.stock <= 0) return;
 
     setItems((currentItems) => {
