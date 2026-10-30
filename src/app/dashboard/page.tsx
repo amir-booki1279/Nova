@@ -51,8 +51,8 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 lg:py-12">
+    <main className="min-w-0">
+      <div className="py-2">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 text-sm text-gray-500">
           <Link href="/" className="transition hover:text-orange-600">
