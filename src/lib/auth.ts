@@ -4,22 +4,19 @@ import { cookies } from "next/headers";
 
 import prisma from "@/lib/prisma";
 import { verifySession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export async function getCurrentUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get("nova-session")?.value;
 
-  if (!token) {
-    console.log("cookie");
-    
+  if (!token) {    
     return null;
   }
 
   const session = await verifySession(token);
 
   if (!session) {
-    console.log("session");
-
     return null;
   }
 
@@ -34,7 +31,25 @@ export async function getCurrentUser() {
       role: true,
     },
   });
-    console.log("user");
+  return user;
+}
+
+export async  function requireUser(){
+  const user = await getCurrentUser();
+
+  if(!user){
+    redirect('/login')
+  }
 
   return user;
 }
+
+export async  function requireAdmin(){
+  const user = await requireUser();
+
+  if(user.role!=="ADMIN"){
+    redirect('/')
+  }
+  return user;
+}
+

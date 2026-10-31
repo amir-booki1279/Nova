@@ -1,7 +1,14 @@
+import { Prisma } from "@/generated/prisma/client";
 import Link from "next/link";
-import { categories } from "@/lib/categories";
 
-export default function CategorySection() {
+type Category = Prisma.CategoryGetPayload<object>;
+type CategoryProps = {
+  categories : Category[];
+}
+
+export default async function CategorySection({categories}:CategoryProps) {
+
+
   return (
     <section className="py-12">
       <div className="mb-6 flex items-center justify-between">

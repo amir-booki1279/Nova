@@ -1,14 +1,17 @@
 import CategorySection from "@/components/categories/CategorySection";
 import Header from "@/components/layout/Header";
 import ProductSection from "@/components/products/ProductSection";
+import { getCategories } from "@/lib/db-categories";
 import Link from "next/link";
 
 
-export default function Home() {
+export default async function Home() {
+  const categories = await getCategories();
+
   return (
    
       <>
-      <Header/>
+      <Header categories={categories}/>
       <main className="mx-auto max-w-7xl px-4 py-16">
          <section className="rounded-3xl bg-slate-900 px-6 py-16 text-white sm:px-12 sm:py-24">
           <span className="inline-block rounded-full bg-orange-500/15 px-4 py-2
@@ -31,7 +34,7 @@ export default function Home() {
          </section>
 
           <ProductSection/>
-          <CategorySection/>
+          <CategorySection categories={categories}/>
 
       </main>
       </>

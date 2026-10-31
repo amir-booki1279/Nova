@@ -1,11 +1,14 @@
 "use client"
-
-
 import Link from "next/link";
 import { useCart } from "../cart/CartProvider";
+import { Prisma } from "@/generated/prisma/client";
 
+type Category = Prisma.CategoryGetPayload<object>;
+type CategoryProps = {
+  categories : Category[];
+}
 
-const Header = () => {
+const Header = ({categories}:CategoryProps) => {
     const  {totalItems} = useCart()
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white">
@@ -86,31 +89,14 @@ const Header = () => {
             <nav aria-label="دسته بندی های اصلی"
             className="border-t border-slate-100">
                 <div className="mx-auto flex max-w-7xl items-center gap-7 overflow-x-auto px-4 py-3 text-sm font-medium whitespace-nowrap">
-                    <Link href={'/products'}
+                   {categories.map((item)=>(
+                     <Link href={`/categories/${item.slug}`} key={item.id}
                     className="text-slate-700 transition hover:text-orange-500">
-                            همه محصولات
+                           {item.name}
                     </Link>
+                   )
 
-                    <Link href={'/categories/electronics'}
-                    className="text-slate-700 transition hover:text-orange-500">
-                           کالای دیجیتال
-                    </Link>
-
-                    <Link href={'/categories/fashion'}
-                    className="text-slate-700 transition hover:text-orange-500">
-                           مد و پوشاک
-                    </Link>
-
-                    <Link href={'/categories/home'}
-                    className="text-slate-700 transition hover:text-orange-500">
-                           خانه و آشپزخانه
-                    </Link>
-
-                    <Link href={'/categories/sports'}
-                    className="text-slate-700 transition hover:text-orange-500">
-                           ورزش و سفر
-                    </Link>
-
+                   )}                    
                     <Link href={'/offers'}
                     className="text-orange-500 transition hover:text-orange-600 font-bold">
                            پیشنهاد های ویژه
