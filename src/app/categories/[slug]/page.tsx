@@ -1,11 +1,10 @@
 
-
-
 import { notFound } from "next/navigation";
 import { categories } from "@/lib/categories";
 
 import ProductCard from "@/components/products/ProductCard";
-import { products } from "@/lib/product";
+import { getProductsByCategorySlug } from "@/lib/db-products";
+
 
 type CategoryPageProps = {
   params: Promise<{
@@ -26,9 +25,7 @@ export default async function CategoryPage({
     notFound();
   }
 
-  const categoryProducts = products.filter(
-    (product) => product.category === category.name
-  );
+  const categoryProducts =await getProductsByCategorySlug(slug)
 
   return (
     <main className="mx-auto min-h-screen max-w-7xl px-4 py-10">

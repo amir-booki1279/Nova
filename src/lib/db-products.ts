@@ -17,6 +17,21 @@ export async function getProducts() {
   });
 }
 
+export async function getProductsByCategorySlug(slug:string) {
+  return prisma.product.findMany({
+    where: {
+      isActive: true,
+      category :{slug}
+    },
+    include: {
+      category: true,
+    },
+    orderBy: {
+      createAt: "desc",
+    },
+  });
+}
+
 export async function getProductBySlug(slug: string) {
   return prisma.product.findFirst({
     where: {
@@ -28,6 +43,46 @@ export async function getProductBySlug(slug: string) {
     },
   });
 }
+
+export async function searchProducts(query: string) {
+  const normalizedQuery = query.trim();
+
+  if (!normalizedQuery) {
+    return [];
+  }
+
+  return prisma.product.findMany({
+    where: {
+      isActive: true,
+      OR: [
+        {
+          name: {
+            contains: normalizedQuery,
+          },
+        },
+        {
+          description: {
+            contains: normalizedQuery,
+          },
+        },
+        {
+          category: {
+            name: {
+              contains: normalizedQuery,
+            },
+          },
+        },
+      ],
+    },
+    include: {
+      category: true,
+    },
+    orderBy: {
+      createAt: "desc",
+    },
+  });
+}
+
 
 
 export type DbProduct = Prisma.ProductGetPayload<{include:{category:true}}>;

@@ -1,9 +1,7 @@
-
-
 import Link from "next/link";
-
 import ProductCard from "@/components/products/ProductCard";
 import { products } from "@/lib/product";
+import { searchProducts } from "@/lib/db-products";
 
 type SearchPageProps = {
   searchParams: Promise<{
@@ -18,9 +16,7 @@ export default async function SearchPage({
 
   const query = q?.trim() ?? "";
 
-  const results = products.filter((product) =>
-    product.name.toLowerCase().includes(query.toLowerCase())
-  );
+  const results = await searchProducts(query);
 
   return (
     <main className="mx-auto min-h-screen max-w-7xl px-4 py-10">
