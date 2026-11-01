@@ -38,6 +38,25 @@ export const addressSchema = z.object({
     .regex(/^\d{10}$/, "کد پستی باید ۱۰ رقم باشد"),
   isDefault: z.boolean(),
 });
-
 export type AddressInput = z.infer<typeof addressSchema>;
 
+
+export const createProductSchema = z.object({
+  name: z.string().trim().min(2, "نام محصول باید حداقل ۲ حرف باشد"),
+  slug: z
+    .string()
+    .trim()
+    .min(2, "شناسه محصول باید حداقل ۲ حرف باشد")
+    .regex(/^[a-z0-9-]+$/, "شناسه فقط می‌تواند شامل حروف انگلیسی کوچک، عدد و خط تیره باشد"),
+  description: z.string().trim().min(10, "توضیحات باید حداقل ۱۰ حرف باشد"),
+  price: z.number().int().positive("قیمت باید بیشتر از صفر باشد"),
+  discountPercentage: z
+    .number()
+    .int()
+    .min(0, "تخفیف نمی‌تواند منفی باشد")
+    .max(100, "تخفیف نمی‌تواند بیشتر از ۱۰۰ درصد باشد"),
+  stock: z.number().int().min(0, "موجودی نمی‌تواند منفی باشد"),
+  image: z.string().trim().min(1, "آدرس تصویر الزامی است"),
+  categoryId: z.string().min(1, "انتخاب دسته‌بندی الزامی است"),
+});
+export type CreateProductInput = z.infer<typeof createProductSchema>;
