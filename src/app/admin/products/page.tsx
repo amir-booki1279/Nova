@@ -1,3 +1,4 @@
+import DeleteProductButton from "@/components/admin/DeleteProductButton";
 import { getAdminProducts } from "@/lib/db_admin-products";
 import Link from "next/link";
 
@@ -120,12 +121,19 @@ export default async function AdminProductsPage() {
                     </td>
 
                     <td className="px-5 py-4">
-                      <Link
+                     <div className="flex items-center gap-2">
+                         <Link
                         href={`/admin/products/${product.id}/edit`}
                         className="text-sm font-semibold text-orange-600 transition hover:text-orange-700"
                       >
                         ویرایش
                       </Link>
+
+                      <DeleteProductButton
+                      productId={product.id}
+                      productName={product.name}
+                      />
+                     </div>
                     </td>
                   </tr>
                 ))}

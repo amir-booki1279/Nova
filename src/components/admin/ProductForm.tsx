@@ -10,16 +10,31 @@ import {
   type CreateProductInput,
 } from "@/lib/validation";
 
-type CategoryOption = {
-  id: string;
-  name: string;
-};
-
 type ProductFormProps = {
-  categories: CategoryOption[];
-};
+    categories:{
+        id:string,
+        name:string
+    }[];
+    product?:{
+        id:string,
+        name:string,
+        slug:string,
+        description:string,
+        price:number,
+        discountPercentage:number,
+        stock:number,
+        image:string,
+        categoryId:string
+    }
+}
 
-export default function ProductForm({ categories }: ProductFormProps) {
+
+
+
+
+
+
+export default function ProductForm({ categories,product }: ProductFormProps) {
   const router = useRouter();
   const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,24 +46,28 @@ export default function ProductForm({ categories }: ProductFormProps) {
   } = useForm<CreateProductInput>({
     resolver: zodResolver(createProductSchema),
     defaultValues: {
-      name: "",
-      slug: "",
-      description: "",
-      price: 0,
-      discountPercentage: 0,
-      stock: 0,
-      image: "",
-      categoryId: "",
+      name:product?.name ?? "",
+      slug:product?.slug ?? "",
+      description:product?.description ?? "",
+      price:product?.price ?? 0,
+      discountPercentage:product?.discountPercentage ?? 0,
+      stock:product?.stock ?? 0,
+      image:product?.image ?? "",
+      categoryId:product?.categoryId ?? "",
     },
   });
 
   async function onSubmit(values: CreateProductInput) {
     setIsSubmitting(true);
     setServerErrors({});
-
+    const isEdditing = Boolean(product);
     try {
-      const response = await fetch("/api/admin/products", {
-        method: "POST",
+      const response = await fetch(
+       isEdditing ? `/api/admin/products/${product?.id}`
+       : "/api/admin/products",
+         
+        {
+        method:isEdditing ? "PATCH":"POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -76,7 +95,7 @@ export default function ProductForm({ categories }: ProductFormProps) {
         return;
       }
 
-      toast.success(result.message ?? "محصول با موفقیت ثبت شد.");
+      toast.success(isEdditing ? "محصول با موفقیت ویرایش شد" :"محصول با موفقیت ثبت شد.");
       router.push("/admin/products");
       router.refresh();
     } catch {

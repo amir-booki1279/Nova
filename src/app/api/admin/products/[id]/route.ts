@@ -117,3 +117,67 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: RouteContext,
+) {
+  try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { message: "ابتدا وارد حساب کاربری شوید." },
+        { status: 401 },
+      );
+    }
+
+    if (user.role !== "ADMIN") {
+      return NextResponse.json(
+        { message: "شما اجازه انجام این عملیات را ندارید." },
+        { status: 403 },
+      );
+    }
+
+    const { id } = await params;
+
+    const product = await prisma.product.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        isActive: true,
+      },
+    });
+
+    if (!product) {
+      return NextResponse.json(
+        { message: "محصول موردنظر پیدا نشد." },
+        { status: 404 },
+      );
+    }
+
+    if (!product.isActive) {
+      return NextResponse.json(
+        { message: "این محصول قبلاً غیرفعال شده است." },
+        { status: 409 },
+      );
+    }
+
+    await prisma.product.update({
+      where: { id },
+      data: { isActive: false },
+    });
+
+    return NextResponse.json({
+      message: "محصول با موفقیت غیرفعال شد.",
+    });
+  } catch (error) {
+    console.error("Deactivate product error:", error);
+
+    return NextResponse.json(
+      { message: "هنگام غیرفعال کردن محصول خطایی رخ داد." },
+      { status: 500 },
+    );
+  }
+}
+
