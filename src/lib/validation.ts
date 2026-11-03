@@ -60,3 +60,27 @@ export const createProductSchema = z.object({
   categoryId: z.string().min(1, "انتخاب دسته‌بندی الزامی است"),
 });
 export type CreateProductInput = z.infer<typeof createProductSchema>;
+
+
+export const categorySchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "نام دسته‌بندی باید حداقل ۲ حرف باشد"),
+
+  slug: z
+    .string()
+    .trim()
+    .min(2, "شناسه دسته‌بندی باید حداقل ۲ حرف باشد")
+    .regex(
+      /^[a-z0-9-]+$/,
+      "شناسه فقط می‌تواند شامل حروف انگلیسی کوچک، عدد و خط تیره باشد",
+    ),
+
+  description: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal("")),
+});
+export type CategoryInput = z.infer<typeof categorySchema>;
